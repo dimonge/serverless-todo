@@ -12,6 +12,7 @@ import { getUserId } from '../utils'
 const logger = createLogger('http')
 const docClient = new DynamoDB.DocumentClient()
 const TODO_TABLE = process.env.TODO_TABLE
+const headers = { 'Access-Control-Allow-Origin': '*' }
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
@@ -27,14 +28,14 @@ export const handler: APIGatewayProxyHandler = async (
     logger.info('Todo was successfully removed.', { todoId })
     return {
       statusCode: 204,
-      headers: { 'Access-Control-Allow-Origin': '*' },
+      headers,
       body: ''
     }
   } catch (error) {
     logger.error('Todo removal failed', { error })
     return {
       statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
+      headers,
       body: error.message
     }
   }

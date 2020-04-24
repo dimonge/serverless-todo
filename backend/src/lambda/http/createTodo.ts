@@ -16,6 +16,7 @@ const TODO_TABLE = process.env.TODO_TABLE
 const docClient = new DynamoDB.DocumentClient()
 const logger = createLogger('auth')
 
+const headers = { 'Access-Control-Allow-Origin': '*' }
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
@@ -37,14 +38,14 @@ export const handler: APIGatewayProxyHandler = async (
 
     return {
       statusCode: 201,
-      headers: { 'Access-Control-Allow-Origin': '*' },
+      headers,
       body: JSON.stringify({ item })
     }
   } catch (error) {
     logger.error('Todo item creation failed', { error })
     return {
       statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
+      headers,
       body: error.message
     }
   }

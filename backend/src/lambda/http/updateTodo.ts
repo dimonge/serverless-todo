@@ -37,14 +37,14 @@ export const handler: APIGatewayProxyHandler = async (
     logger.info('Todo was successful updated', { todoId })
     return {
       statusCode: 204,
-      headers: { 'Access-Control-Allow-Origin': '*' },
+      headers,
       body: ''
     }
   } catch (error) {
     logger.error('Updating todo failed', { error })
     return {
       statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
+      headers,
       body: error.message
     }
   }
