@@ -5,13 +5,14 @@ import {
   APIGatewayProxyResult,
   APIGatewayProxyHandler
 } from 'aws-lambda'
-import { S3 } from 'aws-sdk'
+import { DynamoDB, S3 } from 'aws-sdk'
 import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
 
 const logger = createLogger('http')
 const Bucket = process.env.FILE_UPLOAD_S3_BUCKET
 const TableName = process.env.TODO_TABLE
+const docClient = new DynamoDB.DocumentClient()
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
@@ -39,7 +40,7 @@ export const handler: APIGatewayProxyHandler = async (
         ':attachmentUrl': attachmentUrl
       }
     }
-    const response = await this.docClient.update(params).promise()
+    const response = await docClient.update(params).promise()
     logger.info('Updated the attachment url', { todo: response })
     return {
       statusCode: 200,
