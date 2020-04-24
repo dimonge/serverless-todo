@@ -33,7 +33,7 @@ functions:
           cors: true
     iamRoleStatements:
       - Effect: Allow
-        Action: dynamodb:Query
+        Action: dynamodb:Scan
         Resource: ${self:provider.environment.TODO_TABLE_ARN}
 
   # TODO: Configure this function
