@@ -6,9 +6,6 @@ import {
   APIGatewayProxyHandler
 } from 'aws-lambda'
 import { S3 } from 'aws-sdk'
-import { createLogger } from '../../utils/logger'
-
-const logger = createLogger('http')
 const Bucket = process.env.FILE_UPLOAD_S3_BUCKET
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
