@@ -25,9 +25,9 @@ export const handler: APIGatewayProxyHandler = async (
       .update({
         TableName: tableName,
         Key: { todoId },
-        UpdateExpression: 'set name = :name, dueDate = :dueDate, done = :done',
+        UpdateExpression: 'set name = :n, dueDate = :dueDate, done = :done',
         ExpressionAttributeValues: {
-          ':name': updatedTodo.name,
+          ':n': updatedTodo.name,
           ':dueDate': updatedTodo.dueDate,
           ':done': updatedTodo.done
         }

@@ -7,7 +7,6 @@ import {
 } from 'aws-lambda'
 import { DynamoDB } from 'aws-sdk'
 import { createLogger } from '../../utils/logger'
-import { getUserId } from '../utils'
 
 const logger = createLogger('http')
 const docClient = new DynamoDB.DocumentClient()
@@ -20,7 +19,6 @@ export const handler: APIGatewayProxyHandler = async (
     const todoId = event.pathParameters.todoId
 
     // TODO: Remove a TODO item by id
-    //const userId = getUserId(event)
     await docClient.delete({ TableName: TODO_TABLE, Key: { todoId } }).promise()
 
     logger.info('Todo was successfully removed.', { todoId })
