@@ -16,7 +16,7 @@ export const handler: APIGatewayProxyHandler = async (
     // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
     const s3 = new S3({ signatureVersion: 'v4' })
 
-    const signedUrl = s3.getSignedUrl('putObject', {
+    const uploadUrl = s3.getSignedUrl('putObject', {
       Bucket,
       Key: todoId,
       Expires: 300
@@ -25,7 +25,7 @@ export const handler: APIGatewayProxyHandler = async (
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ item: signedUrl })
+      body: JSON.stringify({ uploadUrl })
     }
   } catch (error) {
     return {
