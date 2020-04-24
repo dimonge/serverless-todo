@@ -20,10 +20,8 @@ export const handler: APIGatewayProxyHandler = async (
     const todoId = event.pathParameters.todoId
 
     // TODO: Remove a TODO item by id
-    const userId = getUserId(event)
-    await docClient
-      .delete({ TableName: TODO_TABLE, Key: { userId, todoId } })
-      .promise()
+    //const userId = getUserId(event)
+    await docClient.delete({ TableName: TODO_TABLE, Key: { todoId } }).promise()
 
     logger.info('Todo was successfully removed.', { todoId })
     return {
