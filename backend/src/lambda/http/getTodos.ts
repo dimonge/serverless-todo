@@ -34,7 +34,7 @@ export const handler: APIGatewayProxyHandler = async (
 
     return {
       statusCode: 200,
-      headers,
+      headers: { 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({ items: todos.Items })
     }
   } catch (error) {
@@ -42,7 +42,7 @@ export const handler: APIGatewayProxyHandler = async (
 
     return {
       statusCode: 500,
-      headers,
+      headers: { 'Access-Control-Allow-Origin': '*' },
       body: error.message
     }
   }
