@@ -17,7 +17,7 @@ export const handler: APIGatewayProxyHandler = async (
 
     // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
     const uploadUrl = generateUploadUrl(todoId)
-    logger.info('Upload url was successfully created')
+    logger.info('Upload url was successfully created' + uploadUrl)
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },

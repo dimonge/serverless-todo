@@ -1,7 +1,7 @@
 import generateUploadUrlAccess from '../persistence/generateUploadUrl'
 
-const generateUploadUrl = async (todoId) => {
-  return await generateUploadUrlAccess(todoId)
+const generateUploadUrl = (todoId) => {
+  return generateUploadUrlAccess(todoId)
 }
 
 export default generateUploadUrl
