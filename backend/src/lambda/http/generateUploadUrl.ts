@@ -5,8 +5,10 @@ import {
   APIGatewayProxyResult,
   APIGatewayProxyHandler
 } from 'aws-lambda'
-import { S3 } from 'aws-sdk'
-const Bucket = process.env.FILE_UPLOAD_S3_BUCKET
+import generateUploadUrl from '../../business/generateUploadUrl'
+import { createLogger } from '../../utils/logger'
+
+const logger = createLogger('http')
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
@@ -14,20 +16,15 @@ export const handler: APIGatewayProxyHandler = async (
     const todoId = event.pathParameters.todoId
 
     // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
-    const s3 = new S3({ signatureVersion: 'v4' })
-
-    const uploadUrl = s3.getSignedUrl('putObject', {
-      Bucket,
-      Key: todoId,
-      Expires: 300
-    })
-
+    const uploadUrl = generateUploadUrl(todoId)
+    logger.info('Upload url was successfully created')
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({ uploadUrl })
     }
   } catch (error) {
+    logger.error('File failed to generate upload url', { error })
     return {
       statusCode: 500,
       headers: { 'Access-Control-Allow-Origin': '*' },

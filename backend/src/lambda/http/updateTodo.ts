@@ -5,12 +5,11 @@ import {
   APIGatewayProxyHandler,
   APIGatewayProxyResult
 } from 'aws-lambda'
-import { DynamoDB } from 'aws-sdk'
 import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
 import { createLogger } from '../../utils/logger'
-const docClient = new DynamoDB.DocumentClient()
+import updateTodo from '../../business/updateTodo'
+import { getUserId } from '../utils'
 const logger = createLogger('http')
-const tableName = process.env.TODO_TABLE
 
 const headers = { 'Access-Control-Allow-Origin': '*' }
 export const handler: APIGatewayProxyHandler = async (
@@ -20,18 +19,8 @@ export const handler: APIGatewayProxyHandler = async (
     const todoId = event.pathParameters.todoId
     const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)
 
-    // TODO: Update a TODO item with the provided id using values in the "updatedTodo" object
-    await docClient
-      .update({
-        TableName: tableName,
-        Key: { todoId },
-        UpdateExpression: 'set dueDate = :dueDate, done = :done',
-        ExpressionAttributeValues: {
-          ':dueDate': updatedTodo.dueDate,
-          ':done': updatedTodo.done
-        }
-      })
-      .promise()
+    const userId = getUserId(event)
+    await updateTodo(todoId, userId, updatedTodo)
 
     logger.info('Todo was successful updated', { todoId })
     return {

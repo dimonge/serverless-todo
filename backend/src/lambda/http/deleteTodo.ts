@@ -5,12 +5,10 @@ import {
   APIGatewayProxyResult,
   APIGatewayProxyHandler
 } from 'aws-lambda'
-import { DynamoDB } from 'aws-sdk'
 import { createLogger } from '../../utils/logger'
+import deleteTodo from '../../business/deleteTodo'
 
 const logger = createLogger('http')
-const docClient = new DynamoDB.DocumentClient()
-const TODO_TABLE = process.env.TODO_TABLE
 const headers = { 'Access-Control-Allow-Origin': '*' }
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
@@ -19,8 +17,7 @@ export const handler: APIGatewayProxyHandler = async (
     const todoId = event.pathParameters.todoId
 
     // TODO: Remove a TODO item by id
-    await docClient.delete({ TableName: TODO_TABLE, Key: { todoId } }).promise()
-
+    await deleteTodo(todoId)
     logger.info('Todo was successfully removed.', { todoId })
     return {
       statusCode: 204,

@@ -1,0 +1,37 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "name",
+    "dueDate",
+    "done",
+    "todoId",
+    "attachmentUrl",
+    "createdAt"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "dueDate": {
+      "type": "string"
+    },
+    "userId": {
+      "type": "string"
+    },
+    "done": {
+      "type": "boolean"
+    },
+    "todoId": {
+      "type": "string"
+    },
+    "attachmentUrl": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    }
+  }
+}

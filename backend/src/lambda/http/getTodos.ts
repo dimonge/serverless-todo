@@ -7,9 +7,8 @@ import {
 } from 'aws-lambda'
 import { createLogger } from '../../utils/logger'
 import { getUserId } from '../utils'
-import { DynamoDB } from 'aws-sdk'
+import getTodos from '../../business/getTodo'
 
-const docClient = new DynamoDB.DocumentClient()
 const logger = createLogger('http')
 const headers = { 'Access-Control-Allow-Origin': '*' }
 export const handler: APIGatewayProxyHandler = async (
@@ -18,24 +17,14 @@ export const handler: APIGatewayProxyHandler = async (
   // TODO: Get all TODO items for a current user
   try {
     const userId = getUserId(event)
-
-    const todos = await docClient
-      .scan({
-        TableName: process.env.TODO_TABLE,
-        IndexName: process.env.INDEX_NAME,
-        FilterExpression: 'userId=:userId',
-        ExpressionAttributeValues: {
-          ':userId': userId
-        }
-      })
-      .promise()
+    const todos = await getTodos(userId)
 
     logger.info('Successful returned the todos')
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ items: todos.Items })
+      body: JSON.stringify({ items: todos })
     }
   } catch (error) {
     logger.error('Fetching todos failed', { error })
